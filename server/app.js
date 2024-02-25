@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
 
+const { USERS } = require('./user');
+const { TODO } = require('./todo');
 // app.get('/', (req, res) => {
 //     res.send("Hello From Graphql");
 // });
@@ -27,7 +29,7 @@ async function startServer() {
             id: ID!
             title: String!
             completed: Boolean
-            userId: ID!
+            user: User
         }
 
         type Query {
@@ -37,10 +39,13 @@ async function startServer() {
         }
         `,
         resolvers: {
+            Todo: {
+                user: async (todo) => (await axios.get(`https://jsonplaceholder.typicode.com/users/${todo.id}`)).data,
+            },
             Query: {
                 getTodos: async () => (await axios.get('https://jsonplaceholder.typicode.com/todos/')).data,
                 getAllUser: async () => (await axios.get('https://jsonplaceholder.typicode.com/users/')).data,
-                getUser: async (parent, {id}) => (await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)).data,
+                getUser: async (parent, { id }) => (await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)).data,
             },
         }
     });

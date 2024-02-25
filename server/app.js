@@ -40,12 +40,12 @@ async function startServer() {
         `,
         resolvers: {
             Todo: {
-                user: async (todo) => (await axios.get(`https://jsonplaceholder.typicode.com/users/${todo.id}`)).data,
+                user: async (todo) => USERS.find((e) => e.id === todo.id),
             },
             Query: {
-                getTodos: async () => (await axios.get('https://jsonplaceholder.typicode.com/todos/')).data,
-                getAllUser: async () => (await axios.get('https://jsonplaceholder.typicode.com/users/')).data,
-                getUser: async (parent, { id }) => (await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)).data,
+                getTodos: async () => TODO,
+                getAllUser: async () => USERS,
+                getUser: async (parent, { id }) => USERS.find((e) => e.id === id),
             },
         }
     });

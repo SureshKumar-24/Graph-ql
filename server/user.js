@@ -1,4 +1,4 @@
-exports.USER = [
+exports.USERS = [
     {
         "id": 1,
         "name": "Leanne Graham",
